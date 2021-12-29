@@ -256,8 +256,13 @@ class Admincontroller extends CI_Controller
             Data Gagal Ditambahkan!
             </div>');
         } else {
+
+            // var_dump();
+            // die;
+
             $data = [
                 'id_rw' => $penduduk["id_rw"],
+                'nik' => $penduduk["nik"],
                 'nama' => $penduduk["nama"],
                 'tempat_lahir' => $penduduk["tempat_lahir"],
                 'tgl_lahir' => $penduduk["tgl_lahir"],
@@ -587,14 +592,22 @@ class Admincontroller extends CI_Controller
             'jumlah' => $jumlah,
         ];
 
-        $this->Model_sekarang->perbaruiDataSekarang($rw, $data);
+        if ($dataDipilih != null) {
+            $this->Model_sekarang->perbaruiDataSekarang($rw, $data);
+            $this->Model_kurang->delete_data_kurang($id);
+            $this->session->set_flashdata('message', '<div class="alert alert-danger text-center" role="alert">
+                           Data Berhasil Dihapus!
+                      </div>');
+            redirect('admincontroller/data_pengurangan_penduduk');
+        } else {
+            $this->Model_kurang->delete_data_kurang($id);
+            $this->session->set_flashdata('message', '<div class="alert alert-danger text-center" role="alert">
+                           Data Berhasil Dihapus!
+                      </div>');
+            redirect('admincontroller/data_pengurangan_penduduk');
+        }
         // var_dump($jumlah);
         // die;
-        $this->Model_kurang->delete_data_kurang($id);
-        $this->session->set_flashdata('message', '<div class="alert alert-danger text-center" role="alert">
-                   	Data Berhasil Dihapus!
-                  </div>');
-        redirect('admincontroller/data_pengurangan_penduduk');
     }
 
 
